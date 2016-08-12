@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Phototricks</string>
+    <string name="photo">PHOTO</string>
+    <string name="gallery">GALLERY</string>
 </resources>
