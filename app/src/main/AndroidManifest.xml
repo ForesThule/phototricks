@@ -37,6 +37,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".viewPager.ViewPagerSampleActivity"/>
+    <activity android:name=".viewPager.ShowPagerActivity"/>
     </application>
+
 
 </manifest>

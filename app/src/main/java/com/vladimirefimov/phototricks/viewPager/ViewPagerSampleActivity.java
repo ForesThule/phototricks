@@ -32,7 +32,7 @@ public class ViewPagerSampleActivity extends Activity {
 
 
         View page = inflater.inflate(R.layout.page, null);
-        ImageView imageView = (ImageView)findViewById(R.id.imageViewPager);
+//        ImageView imageView = (ImageView)findViewById(R.id.imageViewPager);
 
         pages.add(page);
 
@@ -43,9 +43,7 @@ public class ViewPagerSampleActivity extends Activity {
 
         setContentView(viewPager);
 
-        Picasso.with(getApplicationContext())
-                .load(imgs)
-                .into(imageView);
+
 
 
     }

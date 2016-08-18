@@ -24,7 +24,8 @@ import java.util.Date;
 
 public class MainActivity extends Activity {
 
-    private static final int CAMERA_REQUEST = 777;
+    PhotoPresenter photoPresenter = new PhotoPresenter(this);
+
 
     Button takeFotoButton;
 
@@ -76,10 +77,18 @@ public class MainActivity extends Activity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 777:
-                    showPhoto();
+                    photoPresenter.showPhoto();
+                    break;
+                case 666:
+                    currentImagesLocations.add(String.valueOf(data.getData()));
+                    photoPresenter.showPhoto();
                     break;
             }
         }
+    }
+
+    public void showLarge(View v){
+        photoPresenter.showLarge();
     }
 
 
@@ -87,7 +96,14 @@ public class MainActivity extends Activity {
         switch (v.getId()) {
             case R.id.take_photo:
                 if (currentImagesLocations.size() < 5) {
-                    takePhoto();
+                    photoPresenter.takePhoto();
+                } else
+                    Toast.makeText(this, "Out of photo limits", Toast.LENGTH_SHORT)
+                            .show();
+                break;
+            case R.id.gallery:
+                if (currentImagesLocations.size() < 5) {
+                    photoPresenter.getFromGallery();
                 } else
                     Toast.makeText(this, "Out of photo limits", Toast.LENGTH_SHORT)
                             .show();
@@ -96,66 +112,12 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void showLarge(View v){
 
-        int i = imageContainer.indexOfChild(v);
-        Toast.makeText(MainActivity.this, String.valueOf(i), Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, ViewPagerSampleActivity.class);
-        intent.putExtra("IMGS",currentImagesLocations.get(0));
-        startActivity(intent);
 
-    }
 
-    public void takePhoto() {
-        Intent pictureActionIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri fileUri = getOutputMediaFileUri();
-        currentImagesLocations.add(fileUri.toString());
-        pictureActionIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-        startActivityForResult(pictureActionIntent, CAMERA_REQUEST);
-    }
 
-    private void showPhoto() {
 
-        if (currentImagesLocations.size() <= images.size()) {
-            for (int i = 0; i < currentImagesLocations.size(); i++) {
-                ImageView tmp = images.get(i);
-                Picasso.with(MainActivity.this)
-                        .load(currentImagesLocations.get(i))
-                        .resize(300, 300)
-                        .into(tmp);
-            }
-        }
 
-    }
-
-    private static Uri getOutputMediaFileUri() {
-        return Uri.fromFile(getOutputMediaFile());
-    }
-
-    private static File getOutputMediaFile() {
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
-
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "PHOTOTRICKS");
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                Log.d("MyCameraApp", "failed to create directory");
-                return null;
-            }
-        }
-
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                "IMG_" + timeStamp + ".jpg");
-
-        return mediaFile;
-    }
 
 
 }
