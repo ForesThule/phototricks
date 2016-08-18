@@ -1,4 +1,4 @@
-package com.vladimirefimov.phototricks;
+package com.vladimirefimov.phototricks.viewPager;
 
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
